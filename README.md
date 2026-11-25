@@ -12,9 +12,9 @@ Short Guide to Setting Up a Claude Hook for Automatic Session Restoration.
 Create a Bash script at ~/.local/bin/claude-save-session with the following content:
 
 ```shell
- #!/usr/bin/env bash
+#!/usr/bin/env bash
 INPUT=$(cat)
-SESSION_ID=$(echo "$INPUT" | jq -r '.session_id // empty')
+SESSION_ID=$(echo "$INPUT" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("session_id",""))')
 
 if [ -n "$SESSION_ID" ]; then
     echo "claude --resume $SESSION_ID" > "${CLAUDE_PROJECT_DIR:-.}/session.restore"
